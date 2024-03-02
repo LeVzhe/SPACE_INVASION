@@ -26,7 +26,7 @@ def run_game():
         
         ship.update()
         gf.update_bullets(ai_settings, screen, ship, aliens, bullets)
-        gf.update_aliens(ai_settings, aliens)
+        gf.update_aliens(ai_settings, ship, aliens)
         gf.update_screen(ai_settings, screen, ship, aliens, bullets)
         
         pygame.display.flip()
