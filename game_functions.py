@@ -39,6 +39,21 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
         ship.moving_left = True
     elif event.key == pygame.K_SPACE:
         fire_bullet(ai_settings, screen, ship, bullets)
+    #интерфейс для отладки пришельцев вручную
+    elif event.key == pygame.K_KP_MULTIPLY:
+        ai_settings.bullet_width = 300
+        print('MEGA BULLET ON')   
+    elif event.key == pygame.K_KP_DIVIDE:
+        ai_settings.bullet_width = 3
+        print('MEGA BULLET OFF')           
+    elif event.key == pygame.K_KP_PLUS:
+        ai_settings.alien_speed_factor += 1
+        print('fleet speed = ', ai_settings.alien_speed_factor)
+    elif event.key == pygame.K_KP_MINUS:
+        if ai_settings.alien_speed_factor > 0:
+            ai_settings.alien_speed_factor -= 1
+            print('fleet speed = ', ai_settings.alien_speed_factor)
+    ###########    
     elif event.key == pygame.K_q:
         sys.exit()
 
