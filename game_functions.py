@@ -32,7 +32,7 @@ def create_fleet(ai_settings, screen, ship, aliens):
             create_alien(ai_settings, screen, aliens, alien_number, alien_width, row_number)
 
 
-def check_keydown_events(event, ai_settings, screen, ship, bullets):
+def check_keydown_events(event, ai_settings, stats, screen, ship, bullets):
     if event.key == pygame.K_RIGHT:
         ship.moving_right = True
     elif event.key == pygame.K_LEFT:
@@ -53,7 +53,9 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
         if ai_settings.alien_speed_factor > 0:
             ai_settings.alien_speed_factor -= 1
             print('fleet speed = ', ai_settings.alien_speed_factor)
-    ###########    
+    ########### 
+    elif event.key == pygame.K_p:
+        stats.game_active = not stats.game_active
     elif event.key == pygame.K_q:
         sys.exit()
 
@@ -63,14 +65,21 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(ai_settings, screen, ship, bullets):
+def check_events(ai_settings, screen, stats, play_button, ship, bullets):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ai_settings, screen, ship, bullets)
+            check_keydown_events(event, ai_settings, stats, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(stats, play_button, mouse_x, mouse_y)
+
+def check_play_button(stats, play_button, mouse_x, mouse_y):
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        stats.game_active = True
 
 def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
     screen.fill(ai_settings.bg_color)
@@ -81,7 +90,6 @@ def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button
 
     if not stats.game_active:
         play_button.draw_button()
-        
     pygame.display.flip()
 
 def update_bullets(ai_settings, screen, ship, aliens, bullets):
